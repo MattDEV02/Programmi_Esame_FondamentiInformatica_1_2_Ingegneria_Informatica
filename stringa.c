@@ -4,12 +4,15 @@
 #define ZERO '0'
 
 /*
-  funzione che prende come parametro un char e restituisce 1 se è un carattere numerico, 0 altrimenti.
+  funzione che prende come parametro un char e restituisce 1 se Ã¨ un carattere numerico, 0 altrimenti.
 */
 int isNumero(char c) {
   return (c >= ZERO && c <= '9');
 }
 
+/*
+  funzione che prende come parametro un intero e restituisce il suo valore assoluto.
+*/
 int valoreAssoluto(int x) {
   return x >= 0 ? x : -1 * x; /* operatore ternario */
 }
@@ -33,8 +36,8 @@ void differenzaDueNumerici(char* stringa) {
 /*
   Input: una stringa (sequenza di caratteri) chiamata stringa.
   Pre-condizione: stringa deve contere solo caratteri.
-  Output: nessun output perchè la funzione ha tipo di ritorno void.
-  Post-condizione: nessun output perchè la funzione ha tipo di ritorno void.
+  Output: nessun output perchÃ¨ la funzione ha tipo di ritorno void.
+  Post-condizione: nessun output perchÃ¨ la funzione ha tipo di ritorno void.
 */
    int
       i = 0, /* contatore per scandire la stringa carattere per carattere */
@@ -121,7 +124,7 @@ void testDifferenzaDueNumerici() {
    char stringa11[] = "xx13xxx74xx784xx00xx6xx";
    differenzaDueNumerici(stringa11);
    printf("\nTest differenzaNumerici(\"xx13xxx74xx784xx00xx6xx\") 11: Atteso: \"xx-2xxx3xx784xx0xx6xx\", Calcolato: \"%s\" \n", stringa11);
-   /* N.B. = qualche test in più non fa mica male */
+   /* N.B. = qualche test in piÃ¹ non fa mica male */
 }
 
 
@@ -148,4 +151,3 @@ int main(void) {
   printf("\n \nFine esecuzione programma.\n");
   return 0;
 }
-
