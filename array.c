@@ -57,16 +57,46 @@ int almenoUnoMultiplo(int* interi, int num_interi) {
       ))
       verifica = 0; /* la condizione data non Ã¨ verificata */
    }
-   /* se la sequenza ha meno di 3 valore (interi) allora non possiede triple e la condizione data non Ã¨ verificata */
-   return verifica && num_interi >= 3;
+   /* se la sequenza ha meno di 3 valori (interi) allora possiede tutte triple che soddisfano la condizione data */
+   return verifica;
+}
+
+/*
+   funzione che prende come parametro un array di interi e la sua lunghezza e ritorna 1 se
+   per ogni tripla della sequenza in ingresso esiste almeno un elemento della tripla che
+   divide l'altro 0 altrimenti. (versione ricorsiva della funzione scritta in alto).
+*/
+int recursiveAlmenoUnoMultiplo(int* interi, int num_interi) {
+/*
+  Input: un riferimento ad un array di interi chiamato interi e la sua lunghezza num_interi (anch'essa un intero).
+  Pre-condizione: interi deve contenere solo interi e la sua lunghezza num_interi deve essere >= 0.
+  Output: un valore intero chiamato verifica.
+  Post-condizione: verifica vale 1 se per ogni tripla della sequenza in ingresso
+                   esiste almeno un elemento della tripla che divide l'altro, 0 altrimenti.
+  TIPO DI PROBLEMA: verifica universale con ricorsione.
+*/
+   int verifica = 1; /* variabile di verifica universale */
+   if(num_interi < 3) 
+		verifica = 1; /* se la sequenza ha meno di 3 valori (interi) allora possiede tutte triple che soddisfano la condizione data */
+   else {
+   		verifica =  ( /* 3 fattoriale = 3! = 6 possibili combinazioni */
+			isDivisibilePer(interi[num_interi - 1], interi[num_interi - 2]) ||
+	        isDivisibilePer(interi[num_interi - 1], interi[num_interi - 3]) ||
+	        isDivisibilePer(interi[num_interi - 2], interi[num_interi - 1]) ||
+	        isDivisibilePer(interi[num_interi - 2], interi[num_interi - 3]) ||
+	        isDivisibilePer(interi[num_interi - 3], interi[num_interi - 1]) ||
+	        isDivisibilePer(interi[num_interi - 3], interi[num_interi - 2])
+		) && (recursiveAlmenoUnoMultiplo(interi, num_interi - 1));
+   }
+   return verifica;
 }
 
 /* funzione pricipale */
 int main(void) {
   int
-    num_interi = 0,
-    i = 0;
-  printf("\nSalve Utente, sono un programma che legge una sequenza di interi e dice se per ogni tripla della sequenza in ingresso esiste almeno un elemento della tripla che divide l'altro\n");
+    num_interi = 0, /* lunghezza sequenza di interi in ingresso */
+    i = 0; /* contatore i per scandire la sequenza di interi in ingresso */
+  printf("\nSalve Utente, sono un programma che legge una sequenza di interi e dice se per ogni\ntripla della sequenza in ingresso esiste almeno un elemento della tripla che divide l'altro.\n");
   /* prendo in ingresso da tastiera dell'Utente la lunghezza della sequenza di interi in ingresso */
   printf("\nOra inserisci il numero di interi della sequenza di interi in ingresso: ");
   scanf("%d", &num_interi);
