@@ -16,7 +16,7 @@
 
 /*
    funzione che prende come parametro 2 interi e ritorna 1 se 
-   x � divisvile per y, 0 altrimenti.
+   x è divisvile per y, 0 altrimenti.
 */
 int isDivisibilePer(int x, int y) {
 /*
@@ -24,7 +24,7 @@ int isDivisibilePer(int x, int y) {
   Pre-condizione: x deve essere un intero e y un intero != 0.
   Output: un valore booleano.
   Post-condizione: viene ritornato true se 
-  				   x � divisibile per y (quindi x � un multiplo di y), false altrimenti.
+  				   x è divisibile per y (quindi x è un multiplo di y), false altrimenti.
 */
 	return (x % y) == 0;
 }
@@ -55,9 +55,9 @@ int almenoUnoMultiplo(int* interi, int num_interi) {
         isDivisibilePer(interi[i + 2], interi[i]) ||
         isDivisibilePer(interi[i + 2], interi[i + 1])
       ))
-      verifica = 0; /* la condizione data non è verificata */
+      verifica = 0; /* la condizione data non Ã¨ verificata */
    }
-   /* se la sequenza ha meno di 3 valore (interi) allora non possiede triple e la condizione data non è verificata */
+   /* se la sequenza ha meno di 3 valore (interi) allora non possiede triple e la condizione data non Ã¨ verificata */
    return verifica && num_interi >= 3;
 }
 
