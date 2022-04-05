@@ -34,7 +34,7 @@ int isDivisibilePer(int x, int y) {
    per ogni tripla della sequenza in ingresso esiste almeno un elemento della tripla che
    divide l'altro 0 altrimenti.
 */
-int almenoUnoMultiplo(int* interi, int num_interi) {
+int almenoUnoMultiplo(int interi[], int num_interi) {
 /*
   Input: un riferimento ad un array di interi chiamato interi e la sua lunghezza num_interi (anch'essa un intero).
   Pre-condizione: interi deve contenere solo interi e la sua lunghezza num_interi deve essere >= 0.
@@ -91,6 +91,33 @@ int recursiveAlmenoUnoMultiplo(int* interi, int num_interi) {
    return verifica;
 }
 
+int pointerAlmenoUnoMultiplo(int* interi, int num_interi) { 
+/*
+  Input: un riferimento ad un array di interi chiamato interi e la sua lunghezza num_interi (anch'essa un intero).
+  Pre-condizione: interi deve contenere solo interi e la sua lunghezza num_interi deve essere >= 0.
+  Output: un valore intero chiamato verifica.
+  Post-condizione: verifica vale 1 se per ogni tripla della sequenza in ingresso
+                   esiste almeno un elemento della tripla che divide l'altro, 0 altrimenti.
+  TIPO DI PROBLEMA: verifica universale con puntatori.
+*/
+   int 
+   	verifica = 1, /* variabile di verifica universale */
+   	i = 0;
+   for(; (i < num_interi - 2) && verifica; i++, interi++) {
+      if(!( /* 3 fattoriale = 3! = 6 possibili combinazioni */
+        isDivisibilePer(*interi, *(interi + 1)) ||
+        isDivisibilePer(*interi, *(interi + 2)) ||
+        isDivisibilePer(*(interi + 1), *(interi)) ||
+        isDivisibilePer(*(interi + 1), *(interi + 2)) ||
+        isDivisibilePer(*(interi + 2), *interi) ||
+        isDivisibilePer(*(interi + 2), *(interi + 1))
+      ))
+      verifica = 0; /* la condizione data non Ã¨ verificata */
+   }
+   /* se la sequenza ha meno di 3 valori (interi) allora possiede tutte triple che soddisfano la condizione data */
+   return verifica;
+}
+
 /* funzione pricipale */
 int main(void) {
   int
@@ -111,7 +138,7 @@ int main(void) {
   for(i = 0; i < num_interi; i++) 
     printf(" %d ", interi[i]);
   /* OUTPUT finale */
-  printf("\n \nPer ogni tripla della sequenza in ingresso esiste almeno un elemento della tripla che divide l'altro (0 = no, 1 = si): %d.\n", almenoUnoMultiplo(interi, num_interi));
+  printf("\n \nPer ogni tripla della sequenza in ingresso esiste almeno un elemento della tripla che divide l'altro (0 = no, 1 = si): %d.\n", pointerAlmenoUnoMultiplo(interi, num_interi));
   printf("\n \nFine esecuzione programma.\n");
   return 0;
 }         
