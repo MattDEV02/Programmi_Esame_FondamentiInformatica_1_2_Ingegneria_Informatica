@@ -2,6 +2,8 @@
 #include <string.h>
 
 #define ZERO '0'
+#define NULL_CHAR '\0'
+
 
 /*
   funzione che prende come parametro un char e restituisce 1 se Ã¨ un carattere numerico, 0 altrimenti.
@@ -32,7 +34,7 @@ char intToChar(int x) {
   e la modifica a tal modo da rimpiazzare ogni sequenza (massimale) di esattamente due caratteri
   numerici adiacenti nella stringa con la differenza fra i numeri corrispondenti ai caratteri.
 */
-void differenzaDueNumerici(char* stringa) {
+void differenzaDueNumerici(char stringa[]) {
 /*
   Input: una stringa (sequenza di caratteri) chiamata stringa.
   Pre-condizione: stringa deve contere solo caratteri.
@@ -64,6 +66,47 @@ void differenzaDueNumerici(char* stringa) {
 		}
      } else /* altrimenti vado avanti al prossimo carattere */
         i++;
+   }
+}
+
+/*
+  funzione che prende come parametro un riferimento ad una stringa (sequenza di caratteri)
+  e la modifica a tal modo da rimpiazzare ogni sequenza (massimale) di esattamente due caratteri
+  numerici adiacenti nella stringa con la differenza fra i numeri corrispondenti ai caratteri.
+  E' la versione con puntatori della funzione differenzaDueNumerici scritta sopra.
+*/
+void pointerDifferenzaDueNumerici(char* stringa) {
+/*
+  Input: un riferimento ad una stringa (sequenza di caratteri) chiamata stringa.
+  Pre-condizione: stringa deve contere solo caratteri.
+  Output: nessun output perchÃ¨ la funzione ha tipo di ritorno void.
+  Post-condizione: nessun output perchÃ¨ la funzione ha tipo di ritorno void.
+*/
+   int
+      i = 0, 
+      j = 0,
+      differenza = 0; /* differenza fra i numeri corrispondenti ai caratteri numerici adiacenti */
+   while(*(stringa + i) != NULL_CHAR) { /* guardo carattere per carattere fino all'ultimo */
+	 if(
+        ((i == 0) || (!isNumero(*(stringa + i - 1)))) && /* carattere precedente all'i-esimo non numerico oppure non esistente (prima posizione) */
+        isNumero(*(stringa + i)) && /* i-esimo carattere numerico */
+        isNumero(*(stringa + i + 1)) && /* successivo carattere all'i-esimo carattere numerico */
+        !isNumero(*(stringa + i + 2)) /* successivo carattere del successivo carattere all'i-esimo carattere numerico */
+     ) {
+		/* calcolo la differenza in valore assoluto fra i numeri corrispondenti ai caratteri numerici adiacenti e la salvo nella variabile differenza  */
+		differenza = charToInt(*(stringa + i)) - charToInt(*(stringa + i + 1));
+        if(differenza >= 0) {
+        	/* elimino l'iesimo carattere numerico */
+        	for(j = i; *(stringa + j) != NULL_CHAR; j++)
+            	*(stringa + j) = *(stringa + j + 1);
+          	/* sostituisco  il successivo carattere numerico all'iesimo carattere numerico con la rispettiva differenza tra i 2 */
+        	*(stringa + i) = intToChar(differenza);		
+		} else {
+			*(stringa + i) = '-';
+			*(stringa + i + 1) = intToChar(valoreAssoluto(differenza));
+		}
+     } else   /* altrimenti vado avanti al prossimo carattere */
+        	i++;
    }
 }
 
@@ -124,6 +167,7 @@ void testDifferenzaDueNumerici() {
    char stringa11[] = "xx13xxx74xx784xx00xx6xx";
    differenzaDueNumerici(stringa11);
    printf("\nTest differenzaNumerici(\"xx13xxx74xx784xx00xx6xx\") 11: Atteso: \"xx-2xxx3xx784xx0xx6xx\", Calcolato: \"%s\" \n", stringa11);
+   																				
    /* N.B. = qualche test in piÃ¹ non fa mica male */
 }
 
@@ -144,7 +188,7 @@ int main(void) {
   /* printo la stringa presa in ingresso da tastiera dell'Utente */
   printf("\nStringa input di %d caratteri: \"%s\" \n", lunghezza_stringa - 1, stringa);
    /* modifico la stringa presa in ingresso da tastiera dell'Utente tramite la funzione void differenzaDueNumerici(char* stringa) */
-  differenzaDueNumerici(stringa);
+  pointerDifferenzaDueNumerici(stringa);
   /* OUTPUT finale della stringa modificata */
   printf("\nStringa output di %d caratteri: \"%s\" \n", strlen(stringa), stringa);
   testDifferenzaDueNumerici(); /* avvio il test della funzione void differenzaDueNumerici(char* stringa) tramite la funzione void testDifferenzaDueNumerici() */
