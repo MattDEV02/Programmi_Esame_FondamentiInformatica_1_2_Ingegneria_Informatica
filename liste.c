@@ -26,6 +26,46 @@ Nodo* allocaNodo() {
   return malloc(sizeof(Nodo));
 }
 
+Nodo* acquisisci() {
+   Nodo* head = NULL;
+   FILE* fp = fopen("esami.dat", "rb");
+   if(fp == NULL)
+      printf("\nFile esami.dat NON aperto (rb).\n");
+   else {
+      Esame e;
+      if(fread(&p, sizeof(Esame), 1, fp) == 0)
+         printf("\nFile esami.dat aperto MA vuoto (rb).\n");
+      else {
+         head = allocaNodo();
+         head->esame = e;
+         Nodo* nodo = head;
+         while(fread(&e, sizeof(Esame), 1, fp) > 0) {
+            nodo->next = allocaNodo();
+            nodo = nodo->next;
+            nodo->esame = e;
+         }
+         nodo->next = NULL;
+      }
+      fclose(fp);
+      printf("\nFile esami.dat letto con successo (rb).\n");
+   }
+   return head;
+}
+
+void salva(Nodo* head) {
+   FILE* fp = fopen("esami.dat", "wb");
+   if(fp == NULL)
+      printf("\nFile esami.dat NON aperto (wb).\n");
+   else {
+      while(head != NULL) {
+         fwrite(&(head->esame), sizeof(Esame), 1, fp);
+         head = head->next;
+      }
+      fclose(fp);
+      printf("\nLista di esami salvata con successo nel file esami.dat (wb).\n");
+   }
+}
+
 
 /**********************************************
  ************** VISUALIZZAZIONE ***************
