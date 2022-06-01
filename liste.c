@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX 20 //
+#define MAX 20 // numero massimo di caratteri stringhe
 
 
 /*********************************************
