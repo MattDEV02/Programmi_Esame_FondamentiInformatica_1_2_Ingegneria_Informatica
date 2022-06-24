@@ -2,83 +2,43 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX 20 // numero massimo di caratteri stringhe
+#define MAX 20 // numero massimo caratteri stringhe
 
 
 /*********************************************
 /**************	STRUTTURE ********************
 **********************************************/
 
-
 typedef struct Esame {
-  char nome[MAX];
-  char professore[MAX];
-  int voto;
-  int cfu;
-} Esame;
+   char nome[MAX];
+   char professore[MAX];
+   int voto;
+   int cfu;
+}
+Esame;
 
 typedef struct Nodo {
-  Esame esame;
-  struct Nodo* next;
-} Nodo;
-
-Nodo* allocaNodo() {
-  return malloc(sizeof(Nodo));
+   Esame esame;
+   struct Nodo * next;
 }
+Nodo;
 
-Nodo* acquisisci() {
-   Nodo* head = NULL;
-   FILE* fp = fopen("esami.dat", "rb");
-   if(fp == NULL)
-      printf("\nFile esami.dat NON aperto (rb).\n");
-   else {
-      Esame e;
-      if(fread(&p, sizeof(Esame), 1, fp) == 0)
-         printf("\nFile esami.dat aperto MA vuoto (rb).\n");
-      else {
-         head = allocaNodo();
-         head->esame = e;
-         Nodo* nodo = head;
-         while(fread(&e, sizeof(Esame), 1, fp) > 0) {
-            nodo->next = allocaNodo();
-            nodo = nodo->next;
-            nodo->esame = e;
-         }
-         nodo->next = NULL;
-      }
-      fclose(fp);
-      printf("\nFile esami.dat letto con successo (rb).\n");
-   }
-   return head;
+Nodo * allocaNodo() {
+   return malloc(sizeof(Nodo));
 }
-
-void salva(Nodo* head) {
-   FILE* fp = fopen("esami.dat", "wb");
-   if(fp == NULL)
-      printf("\nFile esami.dat NON aperto (wb).\n");
-   else {
-      while(head != NULL) {
-         fwrite(&(head->esame), sizeof(Esame), 1, fp);
-         head = head->next;
-      }
-      fclose(fp);
-      printf("\nLista di esami salvata con successo nel file esami.dat (wb).\n");
-   }
-}
-
 
 /**********************************************
  ************** VISUALIZZAZIONE ***************
  **********************************************/
 
-int lunghezza(Nodo* head) {
+int lunghezza(Nodo * head) {
    int l = 0;
    /* CASO BASE */
-   if(head == NULL)
+   if (head == NULL)
       l = 0;
    /* PASSO RICORSIVO */
    else
-      l = lunghezza(head->next) + 1;
+      l = lunghezza(head -> next) + 1;
    return l;
 }
 
@@ -86,16 +46,16 @@ void visualizzaEsame(Esame e) {
    printf("Professor %s ; Materia = %s ; Voto = %d ; CFU = %d\n", e.professore, e.nome, e.voto, e.cfu);
 }
 
-void visualizzaLista(Nodo* head) {
-   if(head == NULL)
+void visualizzaLista(Nodo * head) {
+   if (head == NULL)
       printf("\nLista vuota, nulla da visualizzare.\n");
    else {
       printf("\nLista di %d esami: \n \n", lunghezza(head));
       int i = 0;
-      while(head != NULL) {
+      while (head != NULL) {
          printf("\nEsame in posizione %d:  ", i);
-         visualizzaEsame(head->esame);
-         head = head->next;
+         visualizzaEsame(head -> esame);
+         head = head -> next;
          i++;
       }
    }
@@ -105,41 +65,42 @@ void visualizzaLista(Nodo* head) {
  ************** INSERIMENTO ******************
  **********************************************/
 
-void leggiStringa(char* stringa) {
+void leggiStringa(char * stringa) {
    fgets(stringa, MAX, stdin);
    stringa[strlen(stringa) - 1] = '\0';
 }
 
-void leggiEsame(Esame* e) {
+void leggiEsame(Esame * e) {
    printf("\nInserisci il nome dell'esame: ");
-   leggiStringa(e->nome);
+   leggiStringa(e -> nome);
    printf("\nInserisci il nome del professore dell'esame: ");
-   leggiStringa(e->professore);
+   leggiStringa(e -> professore);
    do {
       printf("\nInserisci il voto dell'esame: ");
-      scanf("%d", &(e->voto));
-      if(e->voto < 0)
+      scanf("%d", & (e -> voto));
+      if (e -> voto < 0)
          printf("\nIl voto deve essere > 0, riprova.\n");
-   } while(e->voto < 0);
+   } while (e -> voto < 0);
    do {
       printf("\nInserisci i cfu dell'esame: ");
-      scanf("%d", &(e->cfu));
-      if(e->cfu < 0)
+      scanf("%d", & (e -> cfu));
+      if (e -> cfu < 0)
          printf("\nI CFU devono essere > 0, riprova.\n");
-   } while(e->cfu < 0);
+   } while (e -> cfu < 0);
 }
 
-void inserisciCodaLista(Nodo** puntaHead) {
-   Nodo* nuovo = allocaNodo();
-   leggiEsame(&(nuovo->esame));
-   nuovo->next = NULL;
-   if(*puntaHead == NULL)
-      *puntaHead = nuovo;
+void inserisciCodaLista(Nodo ** puntaHead) {
+   Nodo * nuovo = allocaNodo();
+   leggiEsame( & (nuovo -> esame));
+   nuovo -> next = NULL;
+   if ( * puntaHead == NULL)
+      *
+      puntaHead = nuovo;
    else {
-      Nodo* nodo = *puntaHead;
-      while(nodo->next != NULL)
-         nodo = nodo->next;
-      nodo->next = nuovo;
+      Nodo * nodo = * puntaHead;
+      while (nodo -> next != NULL)
+         nodo = nodo -> next;
+      nodo -> next = nuovo;
       printf("\nEsame inserito con successo in coda alla lista.\n");
    }
 }
@@ -148,66 +109,66 @@ void inserisciCodaLista(Nodo** puntaHead) {
  ************** CANCELLAZIONE *****************
  **********************************************/
 
-int precede(Nodo* nodo1, Nodo* nodo2) {
+int precede(Nodo * nodo1, Nodo * nodo2) {
    return (
-      (nodo1->esame).voto < (nodo2->esame).voto ||
-      (nodo1->esame).cfu > (nodo2->esame).cfu
+      (nodo1 -> esame).voto < (nodo2 -> esame).voto ||
+      (nodo1 -> esame).cfu > (nodo2 -> esame).cfu
    );
 }
 
-Nodo* minimo(Nodo* head) {
-   Nodo* min = head;
-   Nodo* primo = head->next;
-   while(primo != NULL) {
-      if(precede(primo, min))
+Nodo * minimo(Nodo * head) {
+   Nodo * min = head;
+   Nodo * primo = head -> next;
+   while (primo != NULL) {
+      if (precede(primo, min))
          min = primo;
-      primo = primo->next;
+      primo = primo -> next;
    }
    return min;
 }
 
-int stringheUguali(char* stringa1, char* stringa2) {
-  return strcmp(stringa1, stringa2) == 0;
+int stringheUguali(char * stringa1, char * stringa2) {
+   return strcmp(stringa1, stringa2) == 0;
 }
 
-int uguaglianza(Nodo* nodo1, Nodo* nodo2) {
-  return (
-    stringheUguali((nodo1->esame).nome, (nodo2->esame).nome) &&
-    stringheUguali((nodo1->esame).professore, (nodo2->esame).professore) &&
-    (nodo1->esame).voto == (nodo2->esame).voto &&
-    (nodo1->esame).cfu == (nodo2->esame).cfu
-  );
+int uguaglianza(Nodo * nodo1, Nodo * nodo2) {
+   return (
+      stringheUguali((nodo1 -> esame).nome, (nodo2 -> esame).nome) &&
+      stringheUguali((nodo1 -> esame).professore, (nodo2 -> esame).professore) &&
+      (nodo1 -> esame).voto == (nodo2 -> esame).voto &&
+      (nodo1 -> esame).cfu == (nodo2 -> esame).cfu
+   );
 }
 
-void cancella(Nodo** puntaHead) {
-   if(*puntaHead == NULL)
+void cancella(Nodo ** puntaHead) {
+   if ( * puntaHead == NULL)
       printf("\nLista vuota, nulla da cancellare.\n");
    else {
-      Nodo* precedente = *puntaHead;
-      Nodo* successivo = precedente->next;
-      Nodo* dealloca = minimo(*puntaHead); // il minimo va cancellato
+      Nodo * precedente = * puntaHead;
+      Nodo * successivo = precedente -> next;
+      Nodo * dealloca = minimo( * puntaHead); // il minimo va cancellato
       int cancellato = 0;
-      if(uguaglianza(*puntaHead, dealloca)) {
-         free(*puntaHead);
-         *puntaHead = successivo;
+      if (uguaglianza( * puntaHead, dealloca)) {
+         free( * puntaHead);
+         * puntaHead = successivo;
          cancellato = 1;
       } else {
-         while(successivo != NULL && !cancellato) {
-            if(uguaglianza(successivo, dealloca)) {
-               precedente->next = successivo->next;
+         while (successivo != NULL && !cancellato) {
+            if (uguaglianza(successivo, dealloca)) {
+               precedente -> next = successivo -> next;
                free(successivo);
                cancellato = 1;
             } else {
                precedente = successivo;
-               successivo = successivo->next;
+               successivo = successivo -> next;
             }
          }
       }
-      if(cancellato)
+      if (cancellato)
          printf("\nEsame cancellato con successo.\n");
       else
          printf("\nEsame NON cancellato.\n");
-    }
+   }
 }
 
 /**********************************************
@@ -216,39 +177,39 @@ void cancella(Nodo** puntaHead) {
 
 int main(void) {
    /* inizializza la lista */
-   Nodo* head = NULL;
-   int risposta = 0;			// per interazione con utente
-	do {
-		/* richiedi un'operazione all'utente */
-		printf("\nChe operazione vuoi svolgere?\n");
-		printf("1 -> Visualizzazione\n");
-		printf("2 -> Inserimento\n");
-		printf("3 -> Cancellazione\n");
-		printf("0 -> Termina il programma\n");
-		scanf("%d%*c", &risposta);
-		/* gestisci le operazioni dell'utente */
-      switch(risposta) {
+   Nodo * head = NULL;
+   int risposta = 0; // per interazione con utente
+   do {
+      /* richiedi un'operazione all'utente */
+      printf("\nChe operazione vuoi svolgere?\n");
+      printf("1 -> Visualizzazione\n");
+      printf("2 -> Inserimento\n");
+      printf("3 -> Cancellazione\n");
+      printf("0 -> Termina il programma\n");
+      scanf("%d%*c", & risposta);
+      /* gestisci le operazioni dell'utente */
+      switch (risposta) {
          case 0: {
-           printf("\nFinito!\n");
-           break;
+            printf("\nFinito!\n");
+            break;
          }
          case 1: {
-           visualizzaLista(head);
-           break;
+            visualizzaLista(head);
+            break;
          }
          case 2: {
-           inserisciCodaLista(&head);
-           break;
+            inserisciCodaLista( & head);
+            break;
          }
          case 3: {
-           cancella(&head);
-           break;
+            cancella( & head);
+            break;
          }
          default: {
-           printf("\nSelezione non valida!\n");
-           break;
+            printf("\nSelezione non valida!\n");
+            break;
          }
       }
-	} while(risposta);
-  return EXIT_SUCCESS; // 0
+   } while (risposta);
+   return EXIT_SUCCESS; // 0
 }
